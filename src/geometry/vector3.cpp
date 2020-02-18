@@ -1,4 +1,4 @@
-#include <math.h>
+#include <cmath>
 
 using namespace std;
 
@@ -10,7 +10,7 @@ public:
 
   vector3(double x, double y, double z) : x(x), y(y), z(z) {}
 
-  // Vector-vector addition.
+  // Vector addition.
   vector3 operator + (vector3 const& v1, vector3 const& v2) {
     return vector3(v1.x + v2.x, v1.y + v2.y, v3.z + v3.z);
   }
