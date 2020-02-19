@@ -1,10 +1,10 @@
 #pragma once
 
 // A class representing a three-dimensional vector.
-// Has public dobules x, y, z representing the three coordinates.
+// Has public const doubles x, y, z representing the three coordinates.
 class Vector3 {
 public:
-  double x, y, z;
+  const double x, y, z;
 
   Vector3(double x, double y, double z);
 
