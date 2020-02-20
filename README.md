@@ -1,10 +1,3 @@
 # raytracer
 
-## Plan:
-
-- Read ray-tracing in a weekend pdf.
-- Plan main loop.
-- Define scene specification grammar.
-- Create scene parser.
-- Implement main loop and its parts.
-- Test?
+This is a ray tracer as taught in "Ray Tracing in One Weekend" by Peter Shirley.
