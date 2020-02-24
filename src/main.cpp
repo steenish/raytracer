@@ -22,22 +22,30 @@ vec3 color(const ray& r, hitable* world, int depth) {
   }
 }
 
+hitable* tutorial_scene() {
+  int n = 5;
+  hitable** list = new hitable*[n];
+  list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
+  list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
+  list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
+  list[3] = new sphere(vec3(-1,0,-1), 0.5, new dialectric(1.5));
+  list[4] = new sphere(vec3(-1,0,-1), -0.45, new dialectric(1.5));
+  return new hitable_list(list, n);
+}
+
 int main() {
   int nx = 200;
   int ny = 100;
   int ns = 100;
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-  int n_objects = 5;
+  hitable* world = tutorial_scene();
 
-  hitable* list[n_objects];
-  list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
-  list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
-  list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
-  list[3] = new sphere(vec3(-1,0,-1), 0.5, new dialectric(1.5));
-  list[4] = new sphere(vec3(-1,0,-1), -0.45, new dialectric(1.5));
-  hitable* world = new hitable_list(list, n_objects);
-  camera cam(vec3(-2,2,1), vec3(0,0,-1), vec3(0,1,0), 20, float(nx)/float(ny));
+  vec3 lookfrom(3,3,2);
+  vec3 lookat(0,0,-1);
+  float dist_to_focus = (lookfrom-lookat).length();
+  float aperture = 2.0;
+  camera cam(lookfrom, lookat, vec3(0,1,0), 20, float(nx)/float(ny), aperture, dist_to_focus);
 
   for (int j = ny-1; j >= 0; --j) {
     for (int i = 0; i < nx; ++i) {
