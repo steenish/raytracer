@@ -28,12 +28,15 @@ int main() {
   int ns = 100;
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
-  hitable* list[4];
+  int n_objects = 5;
+
+  hitable* list[n_objects];
   list[0] = new sphere(vec3(0,0,-1), 0.5, new lambertian(vec3(0.8, 0.3, 0.3)));
   list[1] = new sphere(vec3(0,-100.5,-1), 100, new lambertian(vec3(0.8, 0.8, 0.0)));
   list[2] = new sphere(vec3(1,0,-1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.3));
-  list[3] = new sphere(vec3(-1,0,-1), 0.5, new metal(vec3(0.8, 0.8, 0.8), 1.0));
-  hitable* world = new hitable_list(list, 4);
+  list[3] = new sphere(vec3(-1,0,-1), 0.5, new dialectric(1.5));
+  list[4] = new sphere(vec3(-1,0,-1), -0.45, new dialectric(1.5));
+  hitable* world = new hitable_list(list, n_objects);
   camera cam;
 
   for (int j = ny-1; j >= 0; --j) {
