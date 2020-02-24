@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <iostream>
 
-using namespace std;
-
 class vec3 {
 public:
   vec3() {}
@@ -36,12 +34,12 @@ public:
   float e[3];
 };
 
-inline istream& operator>>(istream& is, vec3& t) {
+inline std::istream& operator>>(std::istream& is, vec3& t) {
   is >> t.e[0] >> t.e[1] >> t.e[2];
   return is;
 }
 
-inline ostream& operator<<(ostream& os, const vec3& t) {
+inline std::ostream& operator<<(std::ostream& os, const vec3& t) {
   os << t.e[0] << " " << t.e[1] << " " << t.e[2];
   return os;
 }
