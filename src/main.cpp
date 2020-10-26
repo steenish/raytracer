@@ -1,4 +1,5 @@
 #include <iostream>
+#include "bvh_node.h"
 #include "camera.h"
 #include "float.h"
 #include "hitable_list.h"
@@ -37,8 +38,10 @@ hitable* tutorial_scene() {
 hitable* random_scene() {
   int n = 500;
   hitable** list = new hitable*[n+1];
+  hitable** sphere_list = new hitable*[n+1];
   list[0] = new sphere(vec3(0,-1000,0), 1000, new lambertian(vec3(0.5, 0.5, 0.5)));
   int i = 1;
+  int s = 0;
 
   for (int a = -11; a < 11; ++a) {
     for (int b = -11; b < 11; ++b) {
@@ -46,16 +49,18 @@ hitable* random_scene() {
       vec3 center(a+0.9*drand48(), 0.2, b+0.9*drand48());
       if ((center-vec3(4,0.2,0)).length() > 0.9) {
         if (choose_mat < 0.8) { // diffuse
-          list[i++] = new moving_sphere(center, center+vec3(0,0.5*drand48(),0), 0.0, 1.0, 0.2, new lambertian(vec3(drand48()*drand48(), drand48()*drand48(), drand48()*drand48())));
+          sphere_list[s++] = new moving_sphere(center, center+vec3(0,0.5*drand48(),0), 0.0, 1.0, 0.2, new lambertian(vec3(drand48()*drand48(), drand48()*drand48(), drand48()*drand48())));
         } else if (choose_mat < 0.95) { // metal
-          list[i++] = new sphere(center, 0.2,
+          sphere_list[s++] = new sphere(center, 0.2,
                                  new metal(vec3(0.5*(1+drand48()),0.5*(1+drand48()),0.5*(1+drand48())), 0.5*drand48()));
         } else { // glass
-          list[i++] = new sphere(center, 0.2, new dialectric(1.5));
+          sphere_list[s++] = new sphere(center, 0.2, new dialectric(1.5));
         }
       }
     }
   }
+
+  list[i++] = new bvh_node(sphere_list, s, 0, 1);
 
   list[i++] = new sphere(vec3(0,1,0), 1.0, new dialectric(1.5));
   list[i++] = new sphere(vec3(-4,1,0), 1.0, new lambertian(vec3(0.4,0.2,0.1)));
@@ -65,9 +70,9 @@ hitable* random_scene() {
 }
 
 int main() {
-  int nx = 200;
-  int ny = 100;
-  int ns = 10;
+  int nx = 640;
+  int ny = 480;
+  int ns = 100;
   std::cout << "P3\n" << nx << " " << ny << "\n255\n";
 
   //hitable* world = tutorial_scene();
